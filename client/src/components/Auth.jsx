@@ -7,12 +7,21 @@ const Auth = ({ onLogin, onRegister }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState(""); // State to track error messages
 
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+    return regex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Reset error message
 
     try {
       if (isRegister) {
+        if (!isValidEmail(email)) {
+          setError("Please enter a valid email address."); // Set error if email is invalid
+          return; // Exit the function if the email is invalid
+        }
         await onRegister({ name, email, password });
       } else {
         await onLogin({ email, password });
@@ -40,7 +49,7 @@ const Auth = ({ onLogin, onRegister }) => {
             {error}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           {isRegister && (
             <input
               name="name"
