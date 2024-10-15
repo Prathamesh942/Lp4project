@@ -27,26 +27,41 @@ const App = () => {
     }
   }, [token]);
 
-  const handleLogin = (credentials) => {
-    axios
-      .post("http://localhost:5000/api/auth/login", credentials)
-      .then((response) => {
-        const userToken = response.data.token;
-        setToken(userToken);
-        localStorage.setItem("token", userToken);
-      })
-      .catch((error) => console.log(error));
+  const handleLogin = async (credentials) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        credentials
+      );
+      const userToken = response.data.token;
+      setToken(userToken);
+      localStorage.setItem("token", userToken);
+    } catch (error) {
+      // Log the error and throw a new error with a message
+      console.log(error);
+      throw new Error(
+        error.response?.data?.message || "Invalid login credentials."
+      ); // Provide a default message
+    }
   };
 
-  const handleRegister = (credentials) => {
-    axios
-      .post("http://localhost:5000/api/auth/register", credentials)
-      .then((response) => {
-        const userToken = response.data.token;
-        setToken(userToken);
-        localStorage.setItem("token", userToken);
-      })
-      .catch((error) => console.log(error));
+  const handleRegister = async (credentials) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        credentials
+      );
+      const userToken = response.data.token;
+      setToken(userToken);
+      localStorage.setItem("token", userToken);
+    } catch (error) {
+      // Log the error and throw a new error with a message
+      console.log(error);
+      throw new Error(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      ); // Provide a default message
+    }
   };
 
   const handleAddExpense = (expense) => {

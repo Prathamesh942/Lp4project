@@ -5,50 +5,73 @@ const Auth = ({ onLogin, onRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState(""); // State to track error messages
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isRegister) {
-      onRegister({ name, email, password });
-    } else {
-      onLogin({ email, password });
+    setError(""); // Reset error message
+
+    try {
+      if (isRegister) {
+        await onRegister({ name, email, password });
+      } else {
+        await onLogin({ email, password });
+      }
+    } catch (err) {
+      setError(err.message || "An error occurred. Please try again."); // Set error message on failure
     }
   };
 
   return (
-    <div className=" flex h-[60vh]">
+    <div className="flex h-[60vh]">
       <img
         src="./illustration.png"
         alt=""
-        className=" h-[100%] aspect-square object-cover"
+        className="h-[100%] aspect-square object-cover"
       />
       <div className="max-w-md mx-auto p-4 border border-white border-[10px] text-white h-[100%]">
         <h2 className="text-2xl font-bold mb-4">
           {isRegister ? "Register" : "Login"}
         </h2>
+        {error && (
+          <div className="mb-4 text-red-500 error">
+            {" "}
+            {/* Error message styling */}
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           {isRegister && (
             <input
+              name="name"
               type="text"
               placeholder="Name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border-b border-gray-300  bg-transparent"
+              onChange={(e) => {
+                setError("");
+                setName(e.target.value);
+              }}
+              className="w-full p-2 border-b border-gray-300 bg-transparent"
             />
           )}
           <input
+            name="email"
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border-b border-gray-300  bg-transparent"
+            onChange={(e) => {
+              setError("");
+              setEmail(e.target.value);
+            }}
+            className="w-full p-2 border-b border-gray-300 bg-transparent"
           />
           <input
+            name="password"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border-b border-gray-300  bg-transparent"
+            className="w-full p-2 border-b border-gray-300 bg-transparent"
           />
           <button
             type="submit"
