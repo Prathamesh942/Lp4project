@@ -29,6 +29,7 @@ const AddExpenseForm = ({ onAddExpense, editingExpense }) => {
       <input
         type="text"
         placeholder="Title"
+        name="title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="bg-gray-800 text-white p-2 mb-2 w-full"
@@ -37,6 +38,7 @@ const AddExpenseForm = ({ onAddExpense, editingExpense }) => {
       <input
         type="number"
         placeholder="Amount"
+        name="amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         className="bg-gray-800 text-white p-2 mb-2 w-full"
@@ -45,6 +47,7 @@ const AddExpenseForm = ({ onAddExpense, editingExpense }) => {
       <input
         type="text"
         placeholder="Category"
+        name="category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
         className="bg-gray-800 text-white p-2 mb-2 w-full"

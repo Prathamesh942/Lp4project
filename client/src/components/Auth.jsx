@@ -5,29 +5,29 @@ const Auth = ({ onLogin, onRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [error, setError] = useState(""); // State to track error messages
+  const [error, setError] = useState("");
 
   const isValidEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error message
+    setError("");
 
     try {
       if (isRegister) {
         if (!isValidEmail(email)) {
-          setError("Please enter a valid email address."); // Set error if email is invalid
-          return; // Exit the function if the email is invalid
+          setError("Please enter a valid email address.");
+          return;
         }
         await onRegister({ name, email, password });
       } else {
         await onLogin({ email, password });
       }
     } catch (err) {
-      setError(err.message || "An error occurred. Please try again."); // Set error message on failure
+      setError(err.message || "An error occurred. Please try again.");
     }
   };
 

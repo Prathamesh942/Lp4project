@@ -3,7 +3,6 @@ const router = express.Router();
 const Expense = require("../models/Expense");
 const auth = require("../middleware/auth");
 
-// Get all expenses for the logged-in user
 router.get("/", auth, async (req, res) => {
   try {
     const expenses = await Expense.find({ user: req.user.id });
@@ -13,7 +12,6 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// Add a new expense
 router.post("/", auth, async (req, res) => {
   const { description, category, amount } = req.body;
 
@@ -32,7 +30,6 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// Update an expense
 router.put("/:id", auth, async (req, res) => {
   try {
     const updatedExpense = await Expense.findByIdAndUpdate(
@@ -46,7 +43,6 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
-// Delete an expense
 router.delete("/:id", auth, async (req, res) => {
   try {
     await Expense.findByIdAndDelete({ _id: req.params.id, user: req.user.id });

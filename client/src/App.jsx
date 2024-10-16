@@ -8,9 +8,8 @@ import "./App.css";
 const App = () => {
   const [expenses, setExpenses] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [editingExpense, setEditingExpense] = useState(null); // Track which expense is being edited
+  const [editingExpense, setEditingExpense] = useState(null);
 
-  // Fetch expenses if token exists
   useEffect(() => {
     if (token) {
       axios
@@ -37,11 +36,10 @@ const App = () => {
       setToken(userToken);
       localStorage.setItem("token", userToken);
     } catch (error) {
-      // Log the error and throw a new error with a message
       console.log(error);
       throw new Error(
         error.response?.data?.message || "Invalid login credentials."
-      ); // Provide a default message
+      );
     }
   };
 
@@ -55,18 +53,16 @@ const App = () => {
       setToken(userToken);
       localStorage.setItem("token", userToken);
     } catch (error) {
-      // Log the error and throw a new error with a message
       console.log(error);
       throw new Error(
         error.response?.data?.message ||
           "Registration failed. Please try again."
-      ); // Provide a default message
+      );
     }
   };
 
   const handleAddExpense = (expense) => {
     if (editingExpense) {
-      // Update existing expense
       axios
         .put(
           `http://localhost:5000/api/expenses/${editingExpense._id}`,
@@ -81,11 +77,10 @@ const App = () => {
               exp._id === editingExpense._id ? response.data : exp
             )
           );
-          setEditingExpense(null); // Reset editing state
+          setEditingExpense(null);
         })
         .catch((error) => console.log(error));
     } else {
-      // Add new expense
       axios
         .post("http://localhost:5000/api/expenses", expense, {
           headers: { Authorization: `Bearer ${token}` },
@@ -96,7 +91,7 @@ const App = () => {
   };
 
   const handleEditExpense = (expense) => {
-    setEditingExpense(expense); // Set expense to be edited
+    setEditingExpense(expense);
   };
 
   const handleDeleteExpense = (expenseId) => {
